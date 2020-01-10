@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="heading-container">
+    <h1 class="primary-heading">Playing with Canvas</h1>
+    <h2 class="primary-subheading">click and drag to draw</h2>
+    <div class="reset-btn">reset</div>
+  </div>
+  <canvas id="draw" width="800" height="800"></canvas>
+  <script>
+    const reset = document.querySelector('.reset-btn');
+    const canvas = document.querySelector('#draw');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.strokeStyle = '#BADA55';
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 10;
+    // ctx.globalCompositeOperation = 'xor';
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
+
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+    let hue = 0;
+    let direction = true;
+
+    function draw(e) {
+      if (!isDrawing) return; // stop the function when not drawing
+      ctx.strokeStyle = `hsl(${hue}, 100%, 50%`;
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      lastX = e.offsetX;
+      lastY = e.offsetY;
+      // ES6 can do this in one line via destructuring
+      // [lastX, lastY] = [e.offsetX, e.offsetY];
+      hue++;
+      if (hue >= 360) {
+        hue = 0;
+      }
+      if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+        direction = !direction;
+      }
+      direction ? ctx.lineWidth++ : ctx.lineWidth--;
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+
+    reset.addEventListener('click', clearCanvas);
+
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false);
+  </script>
+
+  <style>
+    :root {
+      --gray: #8797AF;
+    }
+
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Raleway', sans-serif;
+    }
+
+    .heading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 1.5rem;
+      background: var(--gray);
+    }
+
+    .heading-container>* {
+      margin: 0;
+    }
+
+    .primary-heading {
+      font-size: 3rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .primary-subheading {
+      font-size: 2rem;
+      font-weight: 400;
+    }
+
+    .reset-btn {
+      border: 1px solid black;
+      border-radius: 2rem;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+
+</body>
+
+</html>
