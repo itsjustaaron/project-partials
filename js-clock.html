@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+
+<body>
+
+  <h1 class="primary-heading">JS / CSS Clock</h1>
+
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand minute-hand"></div>
+      <div class="hand second-hand"></div>
+    </div>
+  </div>
+
+
+  <style>
+    html {
+      background: #F45D01 url(http://unsplash.it/1500/1000?image=882&blur=5);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .primary-heading {
+      font-size: 3.6rem;
+      font-weight: 400;
+    }
+
+    .gradient-box {
+      position: relative;
+      padding: 30% 2em;
+      box-sizing: border-box;
+      color: #FFF;
+      background: #000;
+      background-clip: padding-box;
+      border: solid 5px transparent;
+      border-radius: 1em;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      position: relative;
+      box-sizing: border-box;
+      background: ghostwhite;
+      /* !important */
+      background-clip: padding-box;
+      border: solid 20px transparent;
+      /* border: 20px solid white; */
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 3px rgba(239, 239, 239, .2),
+        inset 0 0 10px black,
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .clock:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      margin: -20px;
+      /* !important */
+      border-radius: inherit;
+      /* !important */
+      background: linear-gradient(to right, red, orange);
+      background: #7335FF;
+      background: -webkit-linear-gradient(top left, #7335FF, #EA0F45);
+      background: -moz-linear-gradient(top left, #7335FF, #EA0F45);
+      background: linear-gradient(to bottom right, #7335FF, #EA0F45);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-5px);
+      /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all .05s;
+      transition-timing-function: cubic-bezier(.1, 2.7, .58, 1);
+      z-index: 2;
+    }
+
+    .hand.second-hand {
+      height: 2px;
+      background: red;
+    }
+  </style>
+
+  <script>
+    const secHand = document.querySelector('.second-hand');
+    const minHand = document.querySelector('.minute-hand');
+    const hrHand = document.querySelector('.hour-hand');
+
+    function setDate() {
+      const now = new Date();
+      const sec = now.getSeconds();
+      const min = now.getMinutes();
+      const hr = now.getHours();
+      const secDeg = ((sec / 60) * 360) + 90; // the 90 offsets the initial value being defaulted to 12 o'clock (90deg)
+      const minDeg = ((min / 60) * 360) + 90;
+      const hrDeg = ((hr / 12) * 360) + 90;
+      secHand.style.transform = `rotate(${secDeg}deg)`;
+      minHand.style.transform = `rotate(${minDeg}deg)`;
+      hrHand.style.transform = `rotate(${hrDeg}deg)`;
+      console.log(sec, min, hr);
+    }
+
+    setInterval(setDate, 1000);
+  </script>
+</body>
+
+</html>
