@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dad Jokes</title>
+  <link rel="stylesheet" href="../../base.css">
+  <style>
+    html {
+      --size: 20px;
+    }
+
+    .wrapper {
+      text-align: center;
+    }
+
+    .joke {
+      font-size: 5rem;
+      font-weight: 900;
+    }
+
+    .lds-hourglass {
+      display: inline-block;
+      position: relative;
+      width: var(--size);
+      height: var(--size);
+    }
+
+    .lds-hourglass:after {
+      content: " ";
+      display: block;
+      border-radius: 50%;
+      width: 0;
+      height: 0;
+      margin: 8px;
+      box-sizing: border-box;
+      border: calc(var(--size) * 0.4) solid #fff;
+      border-color: #fff transparent #fff transparent;
+      animation: lds-hourglass 1.2s infinite;
+    }
+
+    @keyframes lds-hourglass {
+      0% {
+        transform: rotate(0);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+      }
+
+      50% {
+        transform: rotate(900deg);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+
+      100% {
+        transform: rotate(1800deg);
+      }
+    }
+
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="joke">
+      <p>Dad Jokes.</p>
+    </div>
+    <button class="getJoke">
+      <span class="jokeText">Get A Joke</span>
+      <div class="lds-hourglass loader hidden"></div>
+    </button>
+  </div>
+
+  <script>
+    const jokeButton = document.querySelector('.getJoke');
+    const jokeButtonText = jokeButton.querySelector('.jokeText');
+    const jokeContainer = document.querySelector('.joke p');
+    const loader = document.querySelector('.loader');
+    const buttonText = [
+      'Ugh.',
+      '🤦🏻‍♂️',
+      'omg dad.',
+      'you are the worst',
+      'seriously',
+      'stop it.',
+      'please stop',
+      'that was the worst one',
+    ];
+
+    function wait(ms = 0) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function unqArrayItem(arr, not) {
+      const item = arr[Math.floor(Math.random() * arr.length)];
+      if (item === not) {
+        return unqArrayItem(arr, not);
+      }
+      return item;
+    }
+
+    async function fetchJoke() {
+      loader.classList.remove('hidden');
+      const response = await fetch('http://icanhazdadjoke.com', {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+      // console.log(response);
+      const joke = await response.json();
+      wait(2000).then(loader.classList.add('hidden'));
+      return joke;
+    }
+
+    async function displayJoke() {
+      const { joke } = await fetchJoke();
+      jokeButtonText.textContent = unqArrayItem(
+        buttonText,
+        jokeButtonText.textContent
+      );
+      jokeContainer.textContent = joke;
+    }
+
+    jokeButton.addEventListener('click', displayJoke);
+
+  </script>
+</body>
+
+</html>
