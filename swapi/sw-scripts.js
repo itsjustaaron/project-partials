@@ -1,5 +1,3 @@
-// TODO: change endpoint to allow user to choose anything, not just planets
-// values: films, people, planets, species, starships, vehicles
 const baseEndpoint = "https://swapi.co/api/";
 const resultsGrid = document.querySelector('.cards');
 const queryInput = document.querySelector('form.search');
