@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Star Wars API courtesy of swapi.co</title>
+  <link rel="stylesheet" href="./sw-styles.css">
+</head>
+
+<body>
+  <style>
+    .wrapper .primary-heading {
+      color: var(--yellow);
+      text-shadow: var(--text-shadow);
+      text-align: center;
+    }
+
+    .search {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .search>* {
+      margin: .2em;
+    }
+
+    button[disabled] {
+      opacity: 0.4;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-gap: 20px;
+    }
+
+    .result-card {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      padding: 20px;
+    }
+
+    .search-results {
+      text-align: center;
+      color: var(--black);
+    }
+
+    .highlight {
+      background: #b92b27;
+      /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #1565C0, #b92b27);
+      /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #1565C0, #b92b27);
+      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      padding: 1rem;
+      margin-left: 1rem;
+      border-radius: .5rem;
+      box-shadow: var(--box-shadow);
+      font-weight: bold;
+      text-shadow: -1px 1px 4px var(--white);
+    }
+
+    .load-more {
+      margin: 2rem auto;
+      display: flex;
+    }
+
+    .hidden {
+      display: none;
+      opacity: 0;
+    }
+  </style>
+  <div class="wrapper">
+    <h1 class="primary-heading">Star Wars API</h1>
+    <form class="search" autocomplete="off">
+      <select name="query">
+        <option value="">Choose a category</option>
+        <option value="films">Films</option>
+        <option value="people">People</option>
+        <option value="planets">Planets</option>
+        <option value="species">Species</option>
+        <option value="starships">Starships</option>
+        <option value="vehicles">Vehicles</option>
+      </select>
+      <button name="submit" type="submit">Submit</button>
+    </form>
+    <div class="cards"></div>
+    <!-- TODO: configure loadMore button to grab next page of results -->
+    <button class="load-more hidden">Load More</button>
+  </div>
+
+
+  <script src="./sw-scripts.js">
+  </script>
+</body>
+
+</html>
