@@ -26,6 +26,7 @@ function displayResults(results) {
   const html = results.map(
     result => `<div class="result-card">
       <h2>${result.name || result.title}</h2>
+      <p>${result.species || null}</p>
     </div>`
   );
   // pulling this out of the function and into fetchAndDisplay for better versatility
@@ -75,3 +76,5 @@ async function handleSubmit(e) {
 
 queryInput.addEventListener('submit', handleSubmit);
 loadButton.addEventListener('click', fetchNext);
+
+fetchAndDisplay('planets');
