@@ -16,6 +16,12 @@ async function fetchData(query) {
   return data;
 }
 
+async function checkAttribute(attr) {
+  const res = await fetch(attr);
+  const data = await res.json();
+  return data;
+}
+
 function handleError(err) {
   console.log('Danger... Error...');
   console.log(err);
@@ -24,14 +30,10 @@ function handleError(err) {
 function displayResults(results) {
   console.log('building out html...');
   const html = results.map(
-    result => `<div class="result-card">
+    result => `<div class="result-card" data-name="${result.name || result.title}">
       <h2>${result.name || result.title}</h2>
-      <p>${result.species || null}</p>
-    </div>`
+    </div>` // TODO: figure out <p> ${checkAttribute(result.species) || null}</p>
   );
-  // pulling this out of the function and into fetchAndDisplay for better versatility
-  // resultsGrid.innerHTML = html.join('');
-  // instead, return the html
   return html.join('');
 }
 
@@ -40,7 +42,7 @@ async function fetchAndDisplay(query) {
   queryInput.submit.disabled = true;
   // submit the search request
   const dataCards = await fetchData(query).catch(handleError);
-  console.log(dataCards);
+  // console.log(dataCards);
   const searchStr = `<p class="search-results">Displaying results for <span class="highlight">${query}</span></p>`;
   const curData = displayResults(dataCards.results);
   resultsGrid.innerHTML = curData;
@@ -53,15 +55,15 @@ async function fetchAndDisplay(query) {
 async function fetchNext() {
   const res = await fetch(nextURL);
   const data = await res.json();
-  // if there aren't more results, hide the load-more button
 
+  // if there aren't more results, hide the load-more button
   if (!data.next) {
     loadButton.classList.add('hidden');
   } else {
     const getMore = await fetch(nextURL);
     nextURL = data.next;
     const moreCards = await getMore.json();
-    console.log(moreCards);
+    // console.log(moreCards);
     const moreResults = displayResults(moreCards.results);
     resultsGrid.insertAdjacentHTML('beforeend', moreResults);
   }
